@@ -15,7 +15,7 @@ const KudosList = () => {
     // Fetch the data when the component mounts
     const fetchKudos = async () => {
       try {
-        const response = await fetch("http://localhost:3000/kudos");
+        const response = await fetch("/kudos");
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
