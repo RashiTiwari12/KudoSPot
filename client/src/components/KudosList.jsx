@@ -19,8 +19,10 @@ const KudosList = () => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
+
+        if (response.redirected) navigate("/");
         const data = await response.json();
-        console.log(data);
+
         setKudosList(data); // Update state with fetched data
       } catch (error) {
         setError(error.message); // Update error state
@@ -28,8 +30,8 @@ const KudosList = () => {
         setLoading(false); // Set loading to false after fetch
       }
     };
-
-    fetchKudos();
+    if (user) fetchKudos();
+    else navigate("/");
   }, []);
 
   if (loading) return <div>Loading...</div>;
@@ -41,10 +43,8 @@ const KudosList = () => {
   const handleClickAnalytics = () => {
     navigate("/kudosanalytics");
   };
-  const handlelogin = () => {
-    navigate("/");
-  };
   const handlelogout = () => {
+    document.cookie = `email=`;
     setUser(null);
     navigate("/");
     if (user === null) {
@@ -52,8 +52,6 @@ const KudosList = () => {
     }
   };
   const handleClickLike = async (id) => {
-    console.log("Clicked ID:", id);
-
     if (!user) {
       alert("User not logged in");
       return;
@@ -61,8 +59,6 @@ const KudosList = () => {
 
     // Check if this kudo has already been liked
 
-    console.log(id);
-    console.log("User:", user);
     if (!id || !user) {
       console.error("Missing kudoId or user data");
       return;
@@ -85,7 +81,6 @@ const KudosList = () => {
       );
 
       // Handle success response (status 200)
-      console.log("Response status:", response.status);
 
       alert(response.data.message);
       setLiked((prevLikedMap) => ({
@@ -123,12 +118,6 @@ const KudosList = () => {
           className="px-4 py-2 text-sm text-white font-medium rounded-lg shadow-md bg-gradient-to-r from-blue-400 to-indigo-500 hover:from-blue-500 hover:to-indigo-600 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300"
         >
           Kudo's Analytics
-        </button>
-        <button
-          onClick={handlelogin}
-          className="px-4 py-2 text-sm text-white font-medium rounded-lg shadow-md bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-green-400 transition-all duration-300"
-        >
-          Login
         </button>
         <button
           onClick={handlelogout}

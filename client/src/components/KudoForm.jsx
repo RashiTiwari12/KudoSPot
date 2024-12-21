@@ -28,12 +28,12 @@ const KudoForm = () => {
         body: JSON.stringify(formData),
         // Convert object to JSON string
       });
-      console.log(formData);
+
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
-      alert("Form submitted successfully!");
+      if (!response.redirected) alert("Form submitted successfully!");
       navigate("/kudoslist");
     } catch (error) {
       console.error("Error:", error); // Log error for debugging

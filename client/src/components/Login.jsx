@@ -11,6 +11,7 @@ function Login() {
     e.preventDefault();
 
     try {
+      document.cookie = `email=${email}`;
       const response = await fetch("/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -20,7 +21,6 @@ function Login() {
       const data = await response.json();
 
       if (response.status === 200) {
-        console.log(data);
         setUser({ name: data.email });
         // On successful login, navigate to the kudolist/main page
         navigate("/kudoslist");
